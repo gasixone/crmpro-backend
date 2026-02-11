@@ -1,1 +1,15 @@
-
+services:
+  - type: web
+    name: crmpro-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: EMAIL_USER
+        value: crmpro.demo@gmail.com
+      - key: EMAIL_PASS
+        value: demo123456
