@@ -103,8 +103,8 @@ app.post('/api/auth/register', async (req, res) => {
       company,
       phone: phone || null,
       plan,
-      verified: false,
-      verificationToken,
+      verified: true, // Demo: Otomatik doğrula
+      verificationToken: null,
       createdAt: new Date().toISOString(),
       trialEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
     };
@@ -172,9 +172,15 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Kullanıcı bulunamadı.' });
     }
     
-    if (!user.verified) {
-      return res.status(400).json({ success: false, message: 'Lütfen önce e-posta adresinizi doğrulayın.' });
+       // Şifre kontrolü
+    if (user.password !== password) {
+      return res.status(400).json({ success: false, message: 'Şifre hatalı.' });
     }
+    
+    // Demo: E-posta doğrulama kontrolünü atla
+    // if (!user.verified) {
+    //   return res.status(400).json({ success: false, message: 'Lütfen önce e-posta adresinizi doğrulayın.' });
+    // }
     
     const token = jwt.sign(
       { userId: user.id, email: user.email },
